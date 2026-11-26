@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import app.entities.Book;
 import app.entities.Member;
 import app.entities.Loan;
+import app.entities.Role;
+import app.security.SecurityRole;
 import jakarta.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 
@@ -19,6 +21,11 @@ public class Populate {
                 var tx = em.getTransaction();
                 try {
                     tx.begin();
+                    for (SecurityRole role : SecurityRole.values()) {
+                        if (em.find(Role.class, role.getRoleName()) == null) {
+                            em.persist(new Role(role.getRoleName()));
+                        }
+                    }
                     for (var row : data.get("books")) {
                         Book book = new Book();
                         book.setId(row.get("id").asText());
@@ -31,6 +38,13 @@ public class Populate {
                         member.setId(row.get("id").asText());
                         member.setName(row.get("name").asText());
                         member.initializeCredentials();
+                        for (var roleName : row.get("roles")) {
+                            Role role = em.find(Role.class, roleName.asText());
+                            if (role == null) {
+                                throw new IllegalStateException("Unknown seed member role: " + roleName.asText());
+                            }
+                            member.addRole(role);
+                        }
                         em.persist(member);
                     }
                     for (var row : data.get("loans")) {

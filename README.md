@@ -17,6 +17,8 @@ API'et lytter kun på localhost: `http://localhost:7070/api/v1`. Routeoversigten
 
 Hibernate opretter tabellerne `book`, `member`, `loan`, `role` og `member_role`. `hbm2ddl.auto=update` bevarer data mellem genstarter. Ved første opstart importeres hele den oprindelige `db.json` fra `src/main/resources`, hvis alle tre tabeller er tomme. Seed-data indeholder allerede ét aktivt lån på bog `1`.
 
+`Populate.populate(emf)` opretter også rollerne `user` og `admin` og tildeler medlemmernes roller fra `members[].roles` i `db.json`. Seed-medlemmerne kan derfor logge ind med username `1` (user) eller `2` (admin) og kodeord `1234`, uden et separat initialiseringstrin. Eksisterende roller genbruges. Populatoren springer importen over, hvis biblioteket allerede indeholder bøger, medlemmer eller lån; den nulstiller ikke data eller rolletildelinger.
+
 ## Tilslut React
 
 I frontendens `src/api.js` erstattes `BASE_URL` med:

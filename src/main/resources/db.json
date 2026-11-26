@@ -34,11 +34,13 @@
   "members": [
     {
       "id": "1",
-      "name": "Alex Jensen"
+      "name": "Alex Jensen",
+      "roles": ["user"]
     },
     {
       "id": "2",
-      "name": "Sam Nielsen"
+      "name": "Sam Nielsen",
+      "roles": ["admin"]
     }
   ],
   "loans": [

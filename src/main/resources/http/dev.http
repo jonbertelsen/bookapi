@@ -38,3 +38,4 @@ Content-Type: application/json
 ### Current member, requires a JWT from login
 GET {{baseUrl}}/auth/me
 Authorization: Bearer {{token}}
+
