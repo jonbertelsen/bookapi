@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:7070/api/v1
+
+### Books
+GET {{baseUrl}}/books
+
+### Members
+GET {{baseUrl}}/members
+
+### Loans
+GET {{baseUrl}}/loans
+
+### Create book
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{"title": "Refactoring", "author": "Martin Fowler"}
+
+### Borrow a book (replace bookId with an available book)
+POST {{baseUrl}}/loans
+Content-Type: application/json
+
+{"bookId": "2", "memberId": "1", "dueDate": "2026-12-10", "returned": false}
+
+### Return book (replace loanId with the created loan id)
+PATCH {{baseUrl}}/loans/loanId
+Content-Type: application/json
+
+{"returned": true}
+
+### Login (response token can be used in the next request)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{"username": "1", "password": "1234"}
+
+> {% client.global.set("token", response.body.token); %}
+
+### Current member, requires a JWT from login
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
